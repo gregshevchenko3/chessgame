@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "postinstall": "patch-package"
+    "postinstall": "patch-package",
+    "dev": "NODE_ENV=development nodemon src/server.js"
   },
   "keywords": [],
   "author": "",

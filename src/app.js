@@ -1,5 +1,5 @@
 const Vue = require('vue');
 
-module.exports = function createApp(context){
+module.exports = createApp = context => {
     
 }
