@@ -2,40 +2,36 @@ const express = require("express");
 const vueServerRenderer = require('vue-server-renderer');
 const path = require('path');
 const fs = require('fs');
+const { types, promisify } = require('util');
 const setupDevServer = require('../configs/setup-dev-server');
 
-const app = express();
-
-const createRenderer = bundle => vueServerRenderer.createBundleRenderer(bundle, {
-    runInNewContext: false,
-    template: fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8')
-});
-
-app.use('/public', express.static(path.resolve(__dirname, './dist')));
+const readFile = promisify(fs.readFile);
+const createRenderer = async (bundle, tmpl) =>{
+    return vueServerRenderer.createBundleRenderer(bundle, {
+        runInNewContext: false, 
+        template: await readFile(path.resolve(__dirname, tmpl), 'utf-8')
+    });
+};
 
 let renderer;
-
+const app = express();
+app.use('/public', express.static(path.resolve(__dirname, './dist')));
 if(process.env.NODE_ENV === 'development')
-    setupDevServer(app, serverBundle => {
-        renderer = createRenderer(serverBundle);
-    });
+    setupDevServer(app, serverBundle => renderer = createRenderer(serverBundle, './index.html'));
 else 
-    renderer = createRenderer(require('./dist/vue-ssr-server-bundle.json'));
-
-
+    renderer = createRenderer(require('./dist/vue-ssr-server-bundle.json'), './index.html');
 app.get('*', async (req, res)=> {
     const context = {url: req.url};
-    let html;
     try {
-        html = await renderer.renderToString(context);
+        renderer = types.isPromise(renderer) ? await renderer : renderer;
+        let html = await renderer.renderToString(context);
         res.end(html);
     } 
     catch(error){
-        if(err.code === 404) 
+        if(error.code === 404) 
             res.status(404).end('Page not found');
         else
-            res.status(500).end('Internal server error');
+            res.status(500).end(error.message);
     }
 });
-
 app.listen(8080, ()=>console.log(`Listening on: 8080`));
