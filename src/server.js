@@ -3,7 +3,6 @@ const vueServerRenderer = require('vue-server-renderer');
 const path = require('path');
 const fs = require('fs');
 const setupDevServer = require('../configs/setup-dev-server');
-
 const app = express();
 
 const createRenderer = bundle => vueServerRenderer.createBundleRenderer(bundle, {
@@ -31,10 +30,10 @@ app.get('*', async (req, res)=> {
         res.end(html);
     } 
     catch(error){
-        if(err.code === 404) 
+        if(error.code === 404) 
             res.status(404).end('Page not found');
         else
-            res.status(500).end('Internal server error');
+            res.status(500).end(error.message);
     }
 });
 
