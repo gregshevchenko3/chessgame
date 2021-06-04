@@ -15,7 +15,7 @@ module.exports = merge(base, {
     output: {
         path: path.resolve(process.cwd(), 'dist'),
         publicPath: '/public',
-        filename: isProduction ? '[name].[hash].js' : '[name].js',
+        filename: isProduction ? '[name].[hash].js' : '[name][contenthash].js',
         sourceMapFilename: isProduction ? '[name].[hash].js.map' : '[name].js.map'
     },
     resolve: {
