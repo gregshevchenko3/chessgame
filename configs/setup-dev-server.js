@@ -39,7 +39,7 @@ const setupDevServer = (app, onServerBundleReady) => {
             console.warn(info.warnings);
         };
         const bundle = JSON.parse(
-            mfs.readFileSync(path.join(clientConfig.output.path, 'vue-ssr-server-bundle.json'), 'utf-8')
+            _mfs.readFileSync(path.join(clientCfg.output.path, 'vue-ssr-server-bundle.json'), 'utf-8')
         );
         onServerBundleReady(bundle);
     });
