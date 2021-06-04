@@ -41,6 +41,7 @@
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "express": "^4.17.1",
+    "googleapis": "^75.0.0",
     "popper.js": "^1.16.1",
     "portal-vue": "^2.1.7",
     "vue": "^2.6.13",
