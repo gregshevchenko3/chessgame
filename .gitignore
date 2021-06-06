@@ -1,3 +1,5 @@
 /node_modules
 /.theia
 package-lock.json
+key.json
+dist

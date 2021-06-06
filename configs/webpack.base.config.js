@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
     mode: process.env.NODE_ENV,
-    devtool: isProduction,
+    devtool: isProduction ? 'source-map' : 'eval-source-map',
     module: {
         rules: [
             {

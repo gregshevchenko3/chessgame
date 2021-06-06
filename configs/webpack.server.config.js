@@ -14,5 +14,24 @@ module.exports = merge(base, {
     externals: nodeExternals({allowlist: /\.css$/}),
     plugins: [
         new VueSSRServerPlugin()
-    ] 
+    ],
+    module: {
+        rules: [
+            {
+                test: /\.scss$/,
+                use: [
+                    'isomorphic-style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                            importLoaders: 1,
+                            sourceMap: true
+                        }
+                    },
+                    'sass-loader'
+                ]
+            }
+        ]
+    }
 });

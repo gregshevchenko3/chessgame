@@ -4,6 +4,8 @@ const path = require('path');
 const fs = require('fs');
 const { promisify, types } = require('util');
 const setupDevServer = require('../configs/setup-dev-server');
+const { google } = require('googleapis');
+const people = google.people('v1');
 
 const readFile = promisify(fs.readFile);
 const createRenderer = async bundle =>{
@@ -12,6 +14,20 @@ const createRenderer = async bundle =>{
         template: await readFile(path.resolve(__dirname, 'index.html'), 'utf-8')
     });
 };
+
+let oauth_secret = require(path.resolve(process.env.HOME, 'key.json'));
+
+const oauth2Client = new google.auth.OAuth2(
+  oauth_secret.client_id,
+  oauth_secret.client_secret,
+  oauth_secret.redirect_url
+);
+
+const scopes = [
+      'https://www.googleapis.com/auth/userinfo.email',
+      'https://www.googleapis.com/auth/userinfo.profile',
+];
+
 
 let renderer;
 const app = express();
@@ -23,6 +39,15 @@ else
 
 app.get('*', async (req, res)=> {
     const context = {url: req.url};
+        const url = oauth2Client.generateAuthUrl({
+            access_type: 'online',
+            scope: scopes
+        });
+        // const res = await people.people.get({
+        //     resourceName: 'people/me',
+        //     personFields: 'emailAddresses,names,photos',
+        // });
+        console.log(url);
     try {
         renderer = types.isPromise(renderer) ? await renderer : renderer
         let html = await renderer.renderToString(context);
@@ -32,7 +57,7 @@ app.get('*', async (req, res)=> {
         if(error.code === 404) 
             res.status(404).end('Page not found');
         else
-            res.status(500).end(error.message);
+            res.status(500).end(`error: ${error.code}, error.message: ${error.message}`);
     }
 });
 app.listen(8080, ()=>console.log(`Listening on: 8080`));

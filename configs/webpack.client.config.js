@@ -15,7 +15,7 @@ module.exports = merge(base, {
     output: {
         path: path.resolve(process.cwd(), 'dist'),
         publicPath: '/public',
-        filename: isProduction ? '[name].[hash].js' : '[name][contenthash].js',
+        filename: isProduction ? '[name].[hash].js' : '[name].js',
         sourceMapFilename: isProduction ? '[name].[hash].js.map' : '[name].js.map'
     },
     resolve: {
@@ -37,22 +37,15 @@ module.exports = merge(base, {
                 ],
             },
             {
-                test: /\.scss$/i,
+                test:  /\.scss$/i,
                 use: [
                     'vue-style-loader',
                     'css-loader',
-                    {
-                        loader: 'sass-loader',
-                        options: {
-                            sassOptions: {
-                                indentedSyntax: true
-                            }
-                        }
-                    },
+                    'sass-loader',
                 ]
             },
             {
-                test: /\.scss$/i,
+                test: /\.less$/i,
                 use: [
                     'vue-style-loader',
                     'css-loader',
