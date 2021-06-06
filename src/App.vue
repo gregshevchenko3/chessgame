@@ -40,7 +40,7 @@
         },
         data: () => {
             return {
-                title: 'Vue Server-SideRendering'
+                title: 'Vue Server-Side Rendering'
             };
         }
     };

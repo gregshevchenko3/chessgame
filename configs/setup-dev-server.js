@@ -9,7 +9,6 @@ const setupDevServer = (app, onServerBundleReady) => {
     clientCfg.entry.app = ['webpack-hot-middleware/client', clientCfg.entry.app];
     const clientCompiler = webpack(clientCfg);
 
-    console.log(clientCfg.output.publicPath);
     app.use(require('webpack-dev-middleware')(clientCompiler, {
         publicPath: clientCfg.output.publicPath,
         serverSideRender: true
@@ -42,7 +41,6 @@ const setupDevServer = (app, onServerBundleReady) => {
         const bundle = JSON.parse(
             _mfs.readFileSync(path.join(clientCfg.output.path, 'vue-ssr-server-bundle.json'), 'utf-8')
         );
-        console.log(_mfs.readdirSync("/home/gregshevchenko3/chessgame/dist"));
         onServerBundleReady(bundle);
     });
 };

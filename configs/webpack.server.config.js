@@ -6,6 +6,7 @@ const {merge} = require('webpack-merge');
 const base = require('./webpack.base.config');
 const src = path.resolve(process.cwd(), 'src');
 
+
 module.exports = merge(base, {
     entry: path.join(src, 'server-entry.js'),
     target: 'node',

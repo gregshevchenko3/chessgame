@@ -43,6 +43,7 @@ app.get('*', async (req, res)=> {
             access_type: 'online',
             scope: scopes
         });
+        
         // const res = await people.people.get({
         //     resourceName: 'people/me',
         //     personFields: 'emailAddresses,names,photos',

@@ -12,5 +12,6 @@ export default context => {
             if(!matchedComponents.length) return reject({ code: 404 });
             return resolve(app);
         }, reject);
+        
     });
 }

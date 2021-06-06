@@ -3,6 +3,6 @@ import Vuex from 'vuex'
 
 import { fetchUser } from './api';
 
-export createStore = () => {
+export default createStore = () => {
     
 }
