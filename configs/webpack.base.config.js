@@ -13,6 +13,9 @@ module.exports = {
                 test: /\.vue$/,
                 loader: 'vue-loader',
                 include: [ src ],
+                options: {
+                    extractCSS: true
+                }
             },
             {
                 test: /\.m?js$/,

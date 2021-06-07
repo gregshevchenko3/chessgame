@@ -1,6 +1,6 @@
 import createApp  from './app';
 
-const { app } = createApp({state: window.__INITIAL_STATE__});
+const { app, router } = createApp({state: window.__INITIAL_STATE__});
 import './app.scss';
 
 router.onReady(() => {

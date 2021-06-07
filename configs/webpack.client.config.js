@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const base = require('./webpack.base.config');
+const TerserPlugin = require("terser-webpack-plugin");
 
 const src = path.resolve(process.cwd(), 'src');
 
@@ -12,35 +13,54 @@ module.exports = merge(base, {
     entry: {
         app: path.join(src, 'client-entry.js')
     },
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                parallel: true,
+            })
+        ]
+    },
     target: 'web',
     output: {
         path: path.resolve(process.cwd(), 'dist'),
         publicPath: '/public',
-        filename: isProduction ? '[name].[hash].js' : '[name].js',
-        sourceMapFilename: isProduction ? '[name].[hash].js.map' : '[name].js.map'
+        filename: isProduction ? '[name].[fullhash].js' : '[name].js',
+      //  sourceMapFilename: isProduction ? '[name].[fullhash].js.map' : '[name].js.map'
     },
     resolve: {
         extensions: ['.js', '.vue'],
+    },
+    stats: {
+        orphanModules: false
     },
     module: {
         rules: [
             {
                 test: /\.css$/i,
                 use: [
-                    isProduction ? 'vue-style-loader' : MiniCssExtractPlugin.loader, 
+                    MiniCssExtractPlugin.loader, 
                     {
                         loader: 'css-loader',
                         options: {
                             importLoaders: 1
                         }
                     },
-                    'postcss-loader'
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                parser: "postcss-js"
+                            },
+                            execute: true
+                        }
+                    }
                 ],
             },
             {
                 test:  /\.scss$/i,
                 use: [
-                    'vue-style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'sass-loader',
                 ]

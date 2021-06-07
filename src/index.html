@@ -4,10 +4,20 @@
         
         {{{ meta.inject().title.text() }}}
         {{{ meta.inject().meta.text() }}}
+        <script src="public/app.js" defer></script>
+        <link rel="stylesheet" href="public/app.css">
         <title>{{ ttl }}</title>
     </head>
     <body>
+        <script>
+            (()=>{
+                console.log('script run');
+                document.body.style.visibility = "hidden";
+                window.addEventListener('load', ()=>{
+                    document.body.style.visibility = "visible";
+                });
+            })();
+        </script>
         <!--vue-ssr-outlet-->
-        <script src="public/app.js"></script>
     </body>
 </html>

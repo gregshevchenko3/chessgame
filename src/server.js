@@ -38,17 +38,17 @@ else
     renderer = createRenderer(require('./dist/vue-ssr-server-bundle.json'));
 
 app.get('*', async (req, res)=> {
-    const context = {url: req.url};
-        const url = oauth2Client.generateAuthUrl({
-            access_type: 'online',
-            scope: scopes
-        });
+    const context = {url: req.url, state: {}};
+    const url = oauth2Client.generateAuthUrl({
+        access_type: 'online',
+        scope: scopes
+    });
         
-        // const res = await people.people.get({
-        //     resourceName: 'people/me',
-        //     personFields: 'emailAddresses,names,photos',
-        // });
-        console.log(url);
+    // const res = await people.people.get({
+    //     resourceName: 'people/me',
+    //     personFields: 'emailAddresses,names,photos',
+    // });
+    console.log(url);
     try {
         renderer = types.isPromise(renderer) ? await renderer : renderer
         let html = await renderer.renderToString(context);
